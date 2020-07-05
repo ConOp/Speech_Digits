@@ -9,8 +9,7 @@ datastore = shuffle(datastore);
 [dataTrain,dataTest] = splitEachLabel(datastore,0.8);
 
 feature_array = cell(numel(dataTrain.Files),1);
-%Create Labels for each feature.
-%labels = cell(
+labels = zeros(numel(dataTrain.Files),1);
 fprintf("Extracting Features!\n");
 for i=1:size(dataTrain.Files)
     [audioIn,fs] = audioread(dataTrain.Files{i});
@@ -23,10 +22,8 @@ for i=1:size(dataTrain.Files)
     "mfccDeltaDelta",true, ...
     "pitch",true, ...
     "spectralCentroid",true);
-    
+
     feature_array{i} = extract(aFE,audioIn);
     
     fprintf("Done: "+i);
 end
-fprintf("Training Model");
-model = fitcecoc(feature_array,dataTrain.Labels);
