@@ -2,8 +2,6 @@ recordPath = fullfile('Digit_Dataset','recordings');
 datastore = audioDatastore(recordPath);
 datastore.Labels = label_distributer(datastore);
 
-wave_scatter = waveletScattering('SignalLength',8192,'InvarianceScale',0.22,'SamplingFrequency',8000,'OversamplingFactor',2);
-
 rng default;
 datastore = shuffle(datastore);
 [dataTrain,dataTest] = splitEachLabel(datastore,0.8);
@@ -15,13 +13,13 @@ for i=1:size(dataTrain.Files)
     %These stuff below are the features
     aFE = audioFeatureExtractor(...
     "SampleRate",fs, ...
-    "Window",hamming(round(0.03*fs),"periodic"), ...%removing this and the features drop to 14
+    "Window",hamming(round(0.2*fs),"periodic"), ...
     "OverlapLength",round(0.02*fs), ...
     "mfcc",true, ...
-    "mfccDelta",false, ...%turned off
-    "mfccDeltaDelta",false, ...%turned off
+    "mfccDelta",true, ...%turned off
+    "mfccDeltaDelta",true, ...%turned off
     "pitch",true, ...
-    "spectralCentroid",false);%turned off
+    "spectralCentroid",true);%turned off
     
     feature_array{i} = extract(aFE,audioIn);
     
@@ -51,3 +49,4 @@ end
 fprintf("Training Model\n");
 model = fitcecoc(cell_array,labels);
 saveLearnerForCoder(model, 'newfinalmodel'); % used to save a trained model
+

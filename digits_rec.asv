@@ -2,7 +2,7 @@ recordPath = fullfile('Digit_Dataset','recordings');
 datastore = audioDatastore(recordPath);
 datastore.Labels = label_distributer(datastore);
 
-wave_scatter = waveletScattering('SignalLength',8192,'InvarianceScale',0.22,'SamplingFrequency',8000,'OversamplingFactor',2);
+%wave_scatter = waveletScattering('SignalLength',8192,'InvarianceScale',0.22,'SamplingFrequency',8000,'OversamplingFactor',2);
 
 rng default;
 datastore = shuffle(datastore);
@@ -12,15 +12,16 @@ feature_array = cell(numel(dataTrain.Files),1);
 fprintf("Extracting Features!\n");
 for i=1:size(dataTrain.Files)
     [audioIn,fs] = audioread(dataTrain.Files{i});
+    %These stuff below are the features
     aFE = audioFeatureExtractor(...
     "SampleRate",fs, ...
-    "Window",hamming(round(0.03*fs),"periodic"), ...
+    "Window",hamming(round(0.1*fs),"periodic"), ...
     "OverlapLength",round(0.02*fs), ...
     "mfcc",true, ...
-    "mfccDelta",false, ...
-    "mfccDeltaDelta",false, ...
+    "mfccDelta",false, ...%turned off
+    "mfccDeltaDelta",false, ...%turned off
     "pitch",true, ...
-    "spectralCentroid",false);
+    "spectralCentroid",false);%turned off
     
     feature_array{i} = extract(aFE,audioIn);
     
