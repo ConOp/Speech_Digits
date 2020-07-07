@@ -13,7 +13,7 @@ audiowrite('test.wav',recording,fs);
 
 [y,fs]=audioread('test.wav');
 envelope = imdilate(abs(y), true(1500, 1));
-quietParts = envelope > 0.06;
+quietParts = envelope > 0.01;
 beginning = strfind(quietParts',[0 1]);
 ending = strfind(quietParts', [1 0]);
 
