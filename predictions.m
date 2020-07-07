@@ -1,21 +1,8 @@
-
-%{
-[y, fs] = audioread(sprintf('digits_audio.mp3')); 
-fs = 8000 ; 
-nBits = 16 ; 
-nChannels = 1 ; 
-ID = -1; % default audio input device 
-rec = audiorecorder(fs,nBits,nChannels,ID); 
-recordblocking(rec,5);
-recording = getaudiodata(rec);
-audiowrite('test.wav',recording,fs);
-%}
-
 function digits=predictions(filename)
-    model = loadLearnerForCoder('GoodAttempt');
+    model = loadLearnerForCoder('BetterAttempt');
     [y,fs]=audioread(filename);
     envelope = imdilate(abs(y), true(1500, 1));
-    quietParts = envelope > 0.06;
+    quietParts = envelope > 0.03;
     beginning = strfind(quietParts',[0 1]);
     ending = strfind(quietParts', [1 0]);
 
