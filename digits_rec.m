@@ -29,7 +29,7 @@ for i=1:6:numel(dataTest.Files)-6
         [sample{j+1},fs] = audioread(dataTest.Files{i+j});
     end    
     
-    newfile = cat(1,sample{1},silence,sample{2},silence,sample{3},silence,sample{4},silence,sample{5},silence,sample{6});
+    newfile = cat(1,silence,sample{1},silence,sample{2},silence,sample{3},silence,sample{4},silence,sample{5},silence,sample{6},silence);
     n1=double(string(dataTest.Labels(i)));
     n2=double(string(dataTest.Labels(i+1)));
     n3=double(string(dataTest.Labels(i+2)));

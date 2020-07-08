@@ -2,7 +2,7 @@ function digits=predictions(filename)
     model = loadLearnerForCoder('BestAttempt');
     [y,fs]=audioread(filename);
     envelope = imdilate(abs(y), true(1500, 1));
-    quietParts = abs(envelope) > 0.01;
+    quietParts = abs(envelope) > mean(envelope(1:10));
     beginning = strfind(quietParts',[0 1]);
     ending = strfind(quietParts', [1 0]);
 
